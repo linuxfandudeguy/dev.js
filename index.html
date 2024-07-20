@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript IDE</title>
+    <link rel="stylesheet" href="https://unpkg.com/monaco-editor/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #2e2e2e;
+            color: #ddd;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        #controls {
+            padding: 10px;
+            background: #333;
+            border-bottom: 1px solid #444;
+        }
+        button {
+            margin-right: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        #editor {
+            flex: 1;
+            border-bottom: 1px solid #444;
+        }
+        #console {
+            height: 20vh;
+            border-top: 1px solid #444;
+            background: #1e1e1e;
+            padding: 10px;
+            overflow-y: auto;
+            font-family: monospace;
+            white-space: pre-wrap; /* Preserve whitespace for console output */
+        }
+        #fileInput {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="controls">
+            <button id="run"><i class="fas fa-play icon"></i>Run Code</button>
+            <button id="save"><i class="fas fa-save icon"></i>Save Code</button>
+            <button id="load"><i class="fas fa-upload icon"></i>Load Code</button>
+            <input type="file" id="fileInput">
+        </div>
+        <div id="editor"></div>
+        <div id="console"></div>
+    </div>
+
+    <!-- Load Babel Standalone and Monaco Editor -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/monaco-editor/min/vs/loader.js"></script>
+    <script>
+        // Initialize Monaco Editor
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor/min/vs' } });
+        require(['vs/editor/editor.main'], function() {
+            const editor = monaco.editor.create(document.getElementById('editor'), {
+                value: '',
+                language: 'javascript',
+                theme: 'vs-dark'
+            });
+
+            const consoleDiv = document.getElementById('console');
+
+            function logToConsole(message, type = 'log') {
+                const color = type === 'error' ? 'red' : '#ddd';
+                consoleDiv.innerHTML += `${message}\n`;
+                consoleDiv.scrollTop = consoleDiv.scrollHeight; // Scroll to bottom
+            }
+
+            const originalConsole = {
+                log: console.log,
+                error: console.error
+            };
+
+            console.log = function() {
+                logToConsole([...arguments].join(' '), 'log');
+                originalConsole.log.apply(console, arguments);
+            };
+
+            console.error = function() {
+                logToConsole([...arguments].join(' '), 'error');
+                originalConsole.error.apply(console, arguments);
+            };
+
+            function detectDOMInteractions(code) {
+                const domMethods = [
+                    'document.getElementById',
+                    'document.querySelector',
+                    'document.querySelectorAll',
+                    'document.createElement',
+                    'document.write',
+                    'element.innerHTML',
+                    'element.outerHTML',
+                    'element.appendChild',
+                    'element.removeChild',
+                    'element.replaceChild',
+                    'element.insertBefore',
+                    'element.setAttribute'
+                ];
+
+                for (const method of domMethods) {
+                    if (code.includes(method)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            document.getElementById('run').addEventListener('click', () => {
+                try {
+                    consoleDiv.innerHTML = '';
+                    const code = editor.getValue();
+
+                    if (detectDOMInteractions(code)) {
+                        throw new Error('DOM manipulation is not allowed.');
+                    }
+
+                    // Transpile code using Babel
+                    const transpiledCode = Babel.transform(code, { presets: ['env'] }).code;
+
+                    // Evaluate transpiled code
+                    const sandbox = {
+                        console: {
+                            log: console.log,
+                            error: console.error
+                        }
+                    };
+                    const result = new Function('sandbox', `
+                        with (sandbox) {
+                            return (function() { ${transpiledCode} })();
+                        }
+                    `)(sandbox);
+                    if (result !== undefined) {
+                        console.log(result);
+                    }
+                } catch (e) {
+                    console.error(`Error: ${e.message}`);
+                }
+            });
+
+            document.getElementById('save').addEventListener('click', () => {
+                const blob = new Blob([editor.getValue()], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'code.js';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            document.getElementById('load').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+
+            document.getElementById('fileInput').addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        editor.setValue(e.target.result);
+                    };
+                    reader.readAsText(file);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
