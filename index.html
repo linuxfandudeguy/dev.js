@@ -1,127 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript IDE</title>
+    <title>DevJS Editor</title>
     <link rel="stylesheet" href="https://unpkg.com/monaco-editor/min/vs/editor/editor.main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <style>
         body {
-            background-color: #2e2e2e;
-            color: #ddd;
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
-        #container {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        #controls {
-            padding: 10px;
-            background: #333;
-            border-bottom: 1px solid #444;
-        }
-        button {
-            margin-right: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .icon {
-            margin-right: 5px;
-        }
-        #editor {
-            flex: 1;
-            border-bottom: 1px solid #444;
-        }
-        #console {
-            height: 20vh;
-            border-top: 1px solid #444;
-            background: #1e1e1e;
-            padding: 10px;
-            overflow-y: auto;
-            font-family: monospace;
-            white-space: pre-wrap; /* Preserve whitespace for console output */
-        }
-        #fileInput {
-            display: none;
-        }
-        #urlModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-        }
-        #urlModalContent {
-            background: #333;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            width: 400px;
-        }
-        #urlModalContent input {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #444;
-            border-radius: 5px;
-            color: #ddd;
-            background: #222;
-            width: calc(100% - 22px); /* Adjust for padding and border */
-        }
-        #urlModalContent button {
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        #urlModalContent button:hover {
-            background: #0056b3;
-        }
-        #urlModalContent .close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-        }
     </style>
 </head>
-<body>
-    <div id="container">
-        <div id="controls">
-            <button id="run"><i class="fas fa-play icon"></i>Run Code</button>
-            <button id="save"><i class="fas fa-save icon"></i>Save Code</button>
-            <button id="load"><i class="fas fa-upload icon"></i>Load Code</button>
-            <button id="import"><i class="fas fa-link icon"></i>Import URL</button>
-            <input type="file" id="fileInput">
+
+<body class="bg-gray-900 text-gray-200 font-sans">
+
+    <div id="container" class="flex flex-col h-screen">
+        <div id="controls" class="p-4 bg-gray-800 border-b border-gray-700 flex">
+            <button id="run" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-play icon mr-2"></i>Run Code
+            </button>
+            <button id="save" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-save icon mr-2"></i>Save Code
+            </button>
+            <button id="load" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-upload icon mr-2"></i>Load Code
+            </button>
+            <button id="import" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-link icon mr-2"></i>Import URL
+            </button>
+            <input type="file" id="fileInput" class="hidden">
         </div>
-        <div id="editor"></div>
-        <div id="console"></div>
+        <div id="editor" class="flex-1 border-b border-gray-700"></div>
+        <div id="console" class="h-1/5 bg-gray-800 p-4 overflow-y-auto font-mono border-t border-gray-700"></div>
     </div>
 
     <!-- URL Import Modal -->
-    <div id="urlModal">
-        <div id="urlModalContent">
-            <span class="close" id="urlModalClose">&times;</span>
-            <input type="text" id="urlInput" placeholder="Enter script URL">
-            <button id="urlSubmit">Import Script</button>
+    <div id="urlModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+        <div id="urlModalContent" class="bg-gray-800 p-8 rounded-lg text-center relative">
+            <span id="urlModalClose" class="absolute top-2 right-2 text-2xl cursor-pointer">&times;</span>
+            <input type="text" id="urlInput" placeholder="Enter script URL" class="mb-4 px-4 py-2 w-full border border-gray-600 rounded bg-gray-700 text-gray-200">
+            <button id="urlSubmit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">Import Script</button>
         </div>
     </div>
 
@@ -129,9 +52,8 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/monaco-editor/min/vs/loader.js"></script>
     <script>
-        // Initialize Monaco Editor
         require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor/min/vs' } });
-        require(['vs/editor/editor.main'], function() {
+        require(['vs/editor/editor.main'], function () {
             const editor = monaco.editor.create(document.getElementById('editor'), {
                 value: '',
                 language: 'javascript',
@@ -145,9 +67,9 @@
             const urlModalCloseButton = document.getElementById('urlModalClose');
 
             function logToConsole(message, type = 'log') {
-                const color = type === 'error' ? 'red' : '#ddd';
-                consoleDiv.innerHTML += `${message}\n`;
-                consoleDiv.scrollTop = consoleDiv.scrollHeight; // Scroll to bottom
+                const color = type === 'error' ? 'text-red-500' : 'text-gray-200';
+                consoleDiv.innerHTML += `<div class="${color}">${message}</div>`;
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
             }
 
             const originalConsole = {
@@ -155,12 +77,12 @@
                 error: console.error
             };
 
-            console.log = function() {
+            console.log = function () {
                 logToConsole([...arguments].join(' '), 'log');
                 originalConsole.log.apply(console, arguments);
             };
 
-            console.error = function() {
+            console.error = function () {
                 logToConsole([...arguments].join(' '), 'error');
                 originalConsole.error.apply(console, arguments);
             };
@@ -170,10 +92,8 @@
                     consoleDiv.innerHTML = '';
                     const code = editor.getValue();
 
-                    // Transpile code using Babel
                     const transpiledCode = Babel.transform(code, { presets: ['env'] }).code;
 
-                    // Evaluate transpiled code
                     const sandbox = {
                         console: {
                             log: console.log,
@@ -219,7 +139,7 @@
             });
 
             document.getElementById('import').addEventListener('click', () => {
-                urlModal.style.display = 'flex'; // Show modal
+                urlModal.classList.remove('hidden');
             });
 
             urlSubmitButton.addEventListener('click', () => {
@@ -229,11 +149,11 @@
                         .then(response => response.text())
                         .then(data => {
                             editor.setValue(data);
-                            urlModal.style.display = 'none'; // Hide modal
+                            urlModal.classList.add('hidden');
                         })
                         .catch(err => {
                             console.error(`Failed to fetch script: ${err.message}`);
-                            urlModal.style.display = 'none'; // Hide modal
+                            urlModal.classList.add('hidden');
                         });
                 } else {
                     console.error('URL is required.');
@@ -241,16 +161,16 @@
             });
 
             urlModalCloseButton.addEventListener('click', () => {
-                urlModal.style.display = 'none'; // Hide modal
+                urlModal.classList.add('hidden');
             });
 
-            // Close modal if clicked outside of the content
             window.addEventListener('click', (event) => {
                 if (event.target === urlModal) {
-                    urlModal.style.display = 'none';
+                    urlModal.classList.add('hidden');
                 }
             });
         });
     </script>
 </body>
+
 </html>
