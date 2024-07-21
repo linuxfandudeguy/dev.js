@@ -165,38 +165,10 @@
                 originalConsole.error.apply(console, arguments);
             };
 
-            function detectDOMInteractions(code) {
-                const domMethods = [
-                    'document.getElementById',
-                    'document.querySelector',
-                    'document.querySelectorAll',
-                    'document.createElement',
-                    'document.write',
-                    'element.innerHTML',
-                    'element.outerHTML',
-                    'element.appendChild',
-                    'element.removeChild',
-                    'element.replaceChild',
-                    'element.insertBefore',
-                    'element.setAttribute'
-                ];
-
-                for (const method of domMethods) {
-                    if (code.includes(method)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
             document.getElementById('run').addEventListener('click', () => {
                 try {
                     consoleDiv.innerHTML = '';
                     const code = editor.getValue();
-
-                    if (detectDOMInteractions(code)) {
-                        throw new Error('DOM manipulation is not allowed.');
-                    }
 
                     // Transpile code using Babel
                     const transpiledCode = Babel.transform(code, { presets: ['env'] }).code;
