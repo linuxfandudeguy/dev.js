@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features - Dev.js</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .hero-section {
+            background: url('https://lelbois.nekoweb.org/cdn/Screenshot%202024-07-21%2012.39.04%20PM.png') no-repeat center center;
+            background-size: cover;
+            height: 100vh; /* Ensure sufficient height */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            box-sizing: border-box; /* Ensure padding doesn't affect height */
+        }
+        .hero-section h1 {
+            font-size: 2.5rem; /* Adjust font size */
+            margin-bottom: 10px; /* Adjust margin to fit content */
+        }
+        .hero-section p {
+            font-size: 1.25rem; /* Adjust font size */
+            margin-bottom: 20px; /* Add more space for better readability */
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px; /* Normal padding for button */
+            font-size: 1rem; /* Normal font size for button */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* Remove underline */
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            text-decoration: none; /* Ensure no underline on hover */
+        }
+        .feature-list {
+            text-align: left;
+        }
+        .feature-item {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Dev.js</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero-section">
+        <div>
+            <h1>Discover the Features of Dev.js</h1>
+            <p>Explore the powerful features of Dev.js and see how it can enhance your JavaScript development experience.</p>
+            <a href="/editor.html" class="btn btn-custom">Try the Editor</a>
+        </div>
+    </section>
+
+    <section id="features" class="container my-5">
+        <h2 class="text-center mb-5">Features</h2>
+        <div class="feature-list">
+            <div class="feature-item">
+                <h4>Web-Based IDE</h4>
+                <p>Access Dev.js from anywhere with its fully web-based interface, allowing you to code without any local setup.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Function Suggestions</h4>
+                <p>Enjoy real-time function suggestions and code completion, making your coding process faster and more efficient.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Babel Compiler</h4>
+                <p>Utilize the Babel compiler to write modern JavaScript and ensure compatibility across different browsers and environments.</p>
+            </div>
+            <div class="feature-item">
+                <h4>Monaco Editor</h4>
+                <p>Experience a powerful and feature-rich code editor with Monaco, the same editor used in Visual Studio Code.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Dev.js. All rights reserved.</p>
+    </footer>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
