@@ -10,11 +10,11 @@ Thank you for your interest in contributing to Dev.js! We're excited to have you
 
 2. **Clone Your Fork**: Clone your fork to your local machine using:
    ```bash
-   git clone https://github.com/linuxfandudeguy/dev.js.git
+   git clone https://github.com/username/dev.js.git
    ```
    Or if you prefer using SSH:
    ```bash
-   git clone git@github.com:linuxfandudeguy/dev.js.git
+   git clone git@github.com:username/dev.js.git
    ```
 
 3. **Create a Branch**: Create a new branch for your changes. Use a descriptive name for your branch:
