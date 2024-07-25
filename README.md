@@ -11,23 +11,21 @@ Dev.js is a web-based JavaScript IDE designed to provide a seamless and interact
 
 - **Real-time Code Editing**: Experience instant feedback with live code editing.
 - **Function Suggestions**: Get smart function suggestions as you type.
-- **Customizable Interface**: Tailor the IDE to fit your workflow with customizable themes and layouts.
 - **Integrated Console**: Run and test your code directly within the IDE.
 - **GitHub Integration**: Publish your code directly to GitHub (coming soon!).
-- **Built-in Documentation**: Access documentation and helpful resources right from the IDE.
 
 ## Live Demo
 
-Check out the live demo of Dev.js at [Dev.js Demo](https://jside-ochre.vercel.app/).
+Check out the live demo of Dev.js at [Dev.js Demo](https://devjs-ruby.vercel.app).
 
 ## Installation
 
-Dev.js is a web-based application, so no installation is required. Simply visit [Dev.js](https://jside-ochre.vercel.app/) to start coding.
+Dev.js is a web-based application, so no installation is required. Simply visit [Dev.js](https://devjs-ruby.vercel.app/editor.html) to start coding.
 
 ## Usage
 
-1. Open [Dev.js](https://jside-ochre.vercel.app/) in your web browser.
-2. Create a new project or open an existing one.
+1. Open [Dev.js](https://devjs-ruby.vercel.app/editor.html) in your web browser.
+2. Create a new project or load an existing one.
 3. Start coding with real-time feedback and suggestions.
 4. Use the integrated console to run and test your JavaScript code.
 
@@ -43,11 +41,3 @@ We welcome contributions to improve Dev.js! If you have suggestions or want to c
 ## License
 
 Dev.js is licensed under the [MIT License](LICENSE).
-
-## Contact
-
-For questions or feedback, please reach out to [your-email@example.com](mailto:your-email@example.com).
-
----
-
-Feel free to adjust the content, add more details, or change the links to fit your project's specifics.
