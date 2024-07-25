@@ -70,14 +70,20 @@
             const urlModalCloseButton = document.getElementById('urlModalClose');
 
             function logToConsole(message, type = 'log') {
-                const color = type === 'error' ? 'text-red-500' : 'text-gray-200';
+                const color = {
+                    log: 'text-gray-200',
+                    error: 'text-red-500',
+                    warn: 'text-yellow-500'
+                }[type] || 'text-gray-200';
+
                 consoleDiv.innerHTML += `<div class="${color}">${message}</div>`;
                 consoleDiv.scrollTop = consoleDiv.scrollHeight;
             }
 
             const originalConsole = {
                 log: console.log,
-                error: console.error
+                error: console.error,
+                warn: console.warn
             };
 
             console.log = function () {
@@ -90,9 +96,13 @@
                 originalConsole.error.apply(console, arguments);
             };
 
+            console.warn = function () {
+                logToConsole([...arguments].join(' '), 'warn');
+                originalConsole.warn.apply(console, arguments);
+            };
+
             document.getElementById('run').addEventListener('click', () => {
                 try {
-                    consoleDiv.innerHTML = '';
                     const code = editor.getValue();
 
                     const transpiledCode = Babel.transform(code, { presets: ['env'] }).code;
@@ -100,7 +110,8 @@
                     const sandbox = {
                         console: {
                             log: console.log,
-                            error: console.error
+                            error: console.error,
+                            warn: console.warn
                         }
                     };
                     const result = new Function('sandbox', `
