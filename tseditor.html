@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev.ts Editor</title>
+    <link rel="stylesheet" href="https://unpkg.com/monaco-editor/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #editor {
+            height: 100%; /* Ensure editor fills its container */
+        }
+        .monaco-editor {
+            height: 100%; /* Ensure Monaco Editor takes full height */
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-200">
+
+    <div id="container" class="flex flex-col h-screen">
+        <div id="controls" class="p-4 bg-gray-800 border-b border-gray-700 flex">
+            <button id="run" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-play icon mr-2"></i>Run Code
+            </button>
+            <button id="save" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-save icon mr-2"></i>Save Code
+            </button>
+            <button id="load" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-upload icon mr-2"></i>Load Code
+            </button>
+            <button id="import" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
+                <i class="fas fa-link icon mr-2"></i>Import URL
+            </button>
+            <input type="file" id="fileInput" class="hidden">
+        </div>
+        <div id="editor" class="flex-1 border-b border-gray-700"></div>
+        <div id="console" class="h-1/5 bg-gray-800 p-4 overflow-y-auto font-mono border-t border-gray-700"></div>
+    </div>
+
+    <!-- URL Import Modal -->
+    <div id="urlModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
+        <div id="urlModalContent" class="bg-gray-800 p-8 rounded-lg text-center relative">
+            <span id="urlModalClose" class="absolute top-2 right-2 text-2xl cursor-pointer">&times;</span>
+            <input type="text" id="urlInput" placeholder="Enter script URL" class="mb-4 px-4 py-2 w-full border border-gray-600 rounded bg-gray-700 text-gray-200">
+            <button id="urlSubmit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">Import Script</button>
+        </div>
+    </div>
+
+    <!-- Load TypeScript Standalone, Babel Standalone, and Monaco Editor -->
+    <script src="https://unpkg.com/typescript@latest/lib/typescript.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/monaco-editor/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+            const editor = monaco.editor.create(document.getElementById('editor'), {
+                value: '',
+                language: 'typescript',
+                theme: 'vs-dark'
+            });
+
+            const consoleDiv = document.getElementById('console');
+            const urlModal = document.getElementById('urlModal');
+            const urlInput = document.getElementById('urlInput');
+            const urlSubmitButton = document.getElementById('urlSubmit');
+            const urlModalCloseButton = document.getElementById('urlModalClose');
+
+            function logToConsole(message, type = 'log') {
+                const color = {
+                    log: 'text-gray-200',
+                    error: 'text-red-500',
+                    warn: 'text-yellow-500',
+                    request: 'text-blue-500'
+                }[type] || 'text-gray-200';
+
+                consoleDiv.innerHTML += `<div class="${color}">${message}</div>`;
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            }
+
+            const originalConsole = {
+                log: console.log,
+                error: console.error,
+                warn: console.warn
+            };
+
+            console.log = function () {
+                logToConsole([...arguments].join(' '), 'log');
+                originalConsole.log.apply(console, arguments);
+            };
+
+            console.error = function () {
+                logToConsole([...arguments].join(' '), 'error');
+                originalConsole.error.apply(console, arguments);
+            };
+
+            console.warn = function () {
+                logToConsole([...arguments].join(' '), 'warn');
+                originalConsole.warn.apply(console, arguments);
+            };
+
+            // Override fetch to log HTTP requests
+            const originalFetch = window.fetch;
+            window.fetch = function (...args) {
+                const [resource, options] = args;
+                const requestDetails = {
+                    method: options?.method || 'GET',
+                    url: resource,
+                    headers: options?.headers,
+                    body: options?.body
+                };
+                logToConsole(`HTTP Request: ${requestDetails.method} ${requestDetails.url}`, 'request');
+
+                return originalFetch(...args).then(response => {
+                    const clonedResponse = response.clone();
+                    clonedResponse.text().then(body => {
+                        logToConsole(`HTTP Response: ${response.status} ${response.statusText} ${body}`, 'request');
+                    });
+                    return response;
+                }).catch(error => {
+                    logToConsole(`HTTP Error: ${error.message}`, 'error');
+                    throw error;
+                });
+            };
+
+            document.getElementById('run').addEventListener('click', () => {
+                try {
+                    const code = editor.getValue();
+                    const jsCode = ts.transpileModule(code, { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
+
+                    const sandbox = {
+                        console: {
+                            log: console.log,
+                            error: console.error,
+                            warn: console.warn
+                        }
+                    };
+                    const result = new Function('sandbox', `
+                        with (sandbox) {
+                            return (function() { ${jsCode} })();
+                        }
+                    `)(sandbox);
+                    if (result !== undefined) {
+                        console.log(result);
+                    }
+                } catch (e) {
+                    console.error(`Error: ${e.message}`);
+                }
+            });
+
+            document.getElementById('save').addEventListener('click', () => {
+                const blob = new Blob([editor.getValue()], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'code.ts';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            document.getElementById('load').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+
+            document.getElementById('fileInput').addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        editor.setValue(e.target.result);
+                    };
+                    reader.readAsText(file);
+                }
+            });
+
+            document.getElementById('import').addEventListener('click', () => {
+                urlModal.classList.remove('hidden');
+            });
+
+            urlSubmitButton.addEventListener('click', () => {
+                const url = urlInput.value;
+                if (url) {
+                    fetch(url)
+                        .then(response => response.text())
+                        .then(data => {
+                            editor.setValue(data);
+                            urlModal.classList.add('hidden');
+                        })
+                        .catch(err => {
+                            console.error(`Failed to fetch script: ${err.message}`);
+                            urlModal.classList.add('hidden');
+                        });
+                } else {
+                    console.error('URL is required.');
+                }
+            });
+
+            urlModalCloseButton.addEventListener('click', () => {
+                urlModal.classList.add('hidden');
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target === urlModal) {
+                    urlModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
