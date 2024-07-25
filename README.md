@@ -41,3 +41,8 @@ We welcome contributions to improve Dev.js! If you have suggestions or want to c
 ## License
 
 Dev.js is licensed under the [MIT License](LICENSE).
+
+
+## Needed Repo Forks
+
+We need a repo fork for Git support in the IDE.
