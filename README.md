@@ -12,7 +12,7 @@ Dev.js is a web-based JavaScript IDE designed to provide a seamless and interact
 - **Real-time Code Editing**: Experience instant feedback with live code editing.
 - **Function Suggestions**: Get smart function suggestions as you type.
 - **Integrated Console**: Run and test your code directly within the IDE.
-- **GitHub Integration**: Publish your code directly to GitHub (coming soon!).
+- **Syntax Highlighting**: Syntax highlighting for highlighting tokens and functions.
 
 ## Live Demo
 
