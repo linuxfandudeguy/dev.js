@@ -1,7 +1,7 @@
 
 # Dev.js
 
-[![Dev.js Logo](https://lelbois.nekoweb.org/cdn/Screenshot%202024-07-21%2012.28.56%20PM.png)(https://jside-ochre.vercel.app/)
+![Dev.js Logo](https://lelbois.nekoweb.org/cdn/Screenshot%202024-07-21%2012.28.56%20PM.png)(https://jside-ochre.vercel.app/)
 
 ## Overview
 
