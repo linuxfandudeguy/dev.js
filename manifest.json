@@ -1,0 +1,21 @@
+{
+  "name": "Dev.js Editor",
+  "short_name": "Dev.js",
+  "description": "A JavaScript editor with live preview and code management features.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#282c34",
+  "theme_color": "#61dafb",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "192x192",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "512x512",
+      "type": "image/x-icom"
+    }
+  ]
+}
