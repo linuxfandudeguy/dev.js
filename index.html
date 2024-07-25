@@ -1,254 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev.js Editor</title>
-    <link rel="stylesheet" href="https://unpkg.com/monaco-editor/min/vs/editor/editor.main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="manifest" href="/manifest.json"> <!-- Link to manifest file -->
+    <title>Home - Dev.js</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        .hero-section {
+            background: url('https://lelbois.nekoweb.org/cdn/Screenshot%202024-07-21%2012.39.04%20PM.png') no-repeat center center;
+            background-size: cover;
+            height: 100vh; /* Ensure sufficient height */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            box-sizing: border-box; /* Ensure padding doesn't affect height */
+        }
+        .hero-section h1 {
+            font-size: 2.5rem; /* Adjust font size */
+            margin-bottom: 10px; /* Adjust margin to fit content */
+        }
+        .hero-section p {
+            font-size: 1.25rem; /* Adjust font size */
+            margin-bottom: 20px; /* Add more space for better readability */
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px; /* Normal padding for button */
+            font-size: 1rem; /* Normal font size for button */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* Remove underline */
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            text-decoration: none; /* Ensure no underline on hover */
         }
     </style>
 </head>
+<body>
 
-<body class="bg-gray-900 text-gray-200 font-sans">
+    <header>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Dev.js</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="learn-more.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="features.html">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://forms.gle/9F4QuXwigKNCKbu16">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/linuxfandudeguy/dev.js">GitHub</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
-    <div id="container" class="flex flex-col h-screen">
-        <div id="controls" class="p-4 bg-gray-800 border-b border-gray-700 flex">
-            <button id="run" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
-                <i class="fas fa-play icon mr-2"></i>Run Code
-            </button>
-            <button id="save" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
-                <i class="fas fa-save icon mr-2"></i>Save Code
-            </button>
-            <button id="load" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
-                <i class="fas fa-upload icon mr-2"></i>Load Code
-            </button>
-            <button id="import" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
-                <i class="fas fa-link icon mr-2"></i>Import URL
-            </button>
-            <button id="minify" class="mr-2 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 flex items-center">
-                <i class="fas fa-compress icon mr-2"></i>Minify Code
-            </button>
-            <input type="file" id="fileInput" class="hidden">
+    <section class="hero-section">
+        <div>
+            <h1>Welcome to Dev.js</h1>
+            <p>Enhance your JavaScript development with our powerful web-based IDE.</p>
+            <a href="/editor.html" class="btn btn-custom">Try the Editor</a>
         </div>
-        <div id="editor" class="flex-1 border-b border-gray-700"></div>
-        <div id="console" class="h-1/5 bg-gray-800 p-4 overflow-y-auto font-mono border-t border-gray-700"></div>
-    </div>
+    </section>
 
-    <!-- URL Import Modal -->
-    <div id="urlModal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center">
-        <div id="urlModalContent" class="bg-gray-800 p-8 rounded-lg text-center relative">
-            <span id="urlModalClose" class="absolute top-2 right-2 text-2xl cursor-pointer">&times;</span>
-            <input type="text" id="urlInput" placeholder="Enter script URL" class="mb-4 px-4 py-2 w-full border border-gray-600 rounded bg-gray-700 text-gray-200">
-            <button id="urlSubmit" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded">Import Script</button>
+    <section id="about" class="container my-5">
+        <h2 class="text-center mb-5">About Dev.js</h2>
+        <p class="text-center">Dev.js is an advanced web-based IDE designed to streamline your JavaScript development. With features like real-time function suggestions, Babel compilation, and the Monaco editor, Dev.js provides a powerful and user-friendly environment for coding.</p>
+    </section>
+
+    <section id="typescript-editor" class="container my-5">
+        <h2 class="text-center mb-5">Introducing Our TypeScript Editor</h2>
+        <p class="text-center">We're excited to announce the launch of our new TypeScript editor! This new feature provides an enhanced development experience with TypeScript support, including type checking and advanced autocompletion.</p>
+        <p class="text-center">You can explore the TypeScript editor by visiting the following link:</p>
+        <div class="text-center">
+            <a href="https://devjs-ruby.vercel.app/tseditor.html" class="btn btn-custom">Try the TypeScript Editor</a>
         </div>
-    </div>
+    </section>
 
-    <!-- Load Babel Standalone and Monaco Editor -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/monaco-editor/min/vs/loader.js"></script>
-    <script>
-        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor/min/vs' } });
-        require(['vs/editor/editor.main'], function () {
-            const editor = monaco.editor.create(document.getElementById('editor'), {
-                value: '',
-                language: 'javascript',
-                theme: 'vs-dark'
-            });
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Dev.js. All rights reserved.</p>
+    </footer>
 
-            const consoleDiv = document.getElementById('console');
-            const urlModal = document.getElementById('urlModal');
-            const urlInput = document.getElementById('urlInput');
-            const urlSubmitButton = document.getElementById('urlSubmit');
-            const urlModalCloseButton = document.getElementById('urlModalClose');
-
-            function logToConsole(message, type = 'log') {
-                const color = {
-                    log: 'text-gray-200',
-                    error: 'text-red-500',
-                    warn: 'text-yellow-500',
-                    request: 'text-blue-500'
-                }[type] || 'text-gray-200';
-
-                consoleDiv.innerHTML += `<div class="${color}">${message}</div>`;
-                consoleDiv.scrollTop = consoleDiv.scrollHeight;
-            }
-
-            const originalConsole = {
-                log: console.log,
-                error: console.error,
-                warn: console.warn
-            };
-
-            console.log = function () {
-                logToConsole([...arguments].join(' '), 'log');
-                originalConsole.log.apply(console, arguments);
-            };
-
-            console.error = function () {
-                logToConsole([...arguments].join(' '), 'error');
-                originalConsole.error.apply(console, arguments);
-            };
-
-            console.warn = function () {
-                logToConsole([...arguments].join(' '), 'warn');
-                originalConsole.warn.apply(console, arguments);
-            };
-
-            // Override fetch to log HTTP requests
-            const originalFetch = window.fetch;
-            window.fetch = function (...args) {
-                const [resource, options] = args;
-                const requestDetails = {
-                    method: options?.method || 'GET',
-                    url: resource,
-                    headers: options?.headers,
-                    body: options?.body
-                };
-                logToConsole(`HTTP Request: ${requestDetails.method} ${requestDetails.url}`, 'request');
-
-                return originalFetch(...args).then(response => {
-                    const clonedResponse = response.clone();
-                    clonedResponse.text().then(body => {
-                        logToConsole(`HTTP Response: ${response.status} ${response.statusText} ${body}`, 'request');
-                    });
-                    return response;
-                }).catch(error => {
-                    logToConsole(`HTTP Error: ${error.message}`, 'error');
-                    throw error;
-                });
-            };
-
-            document.getElementById('run').addEventListener('click', () => {
-                try {
-                    const code = editor.getValue();
-                    const transpiledCode = Babel.transform(code, { presets: ['env'] }).code;
-
-                    const sandbox = {
-                        console: {
-                            log: console.log,
-                            error: console.error,
-                            warn: console.warn
-                        }
-                    };
-                    const result = new Function('sandbox', `
-                        with (sandbox) {
-                            return (function() { ${transpiledCode} })();
-                        }
-                    `)(sandbox);
-                    if (result !== undefined) {
-                        console.log(result);
-                    }
-                } catch (e) {
-                    console.error(`Error: ${e.message}`);
-                }
-            });
-
-            document.getElementById('save').addEventListener('click', () => {
-                const blob = new Blob([editor.getValue()], { type: 'text/plain;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'code.js';
-                a.click();
-                URL.revokeObjectURL(url);
-            });
-
-            document.getElementById('load').addEventListener('click', () => {
-                document.getElementById('fileInput').click();
-            });
-
-            document.getElementById('fileInput').addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        editor.setValue(e.target.result);
-                    };
-                    reader.readAsText(file);
-                }
-            });
-
-            document.getElementById('import').addEventListener('click', () => {
-                urlModal.classList.remove('hidden');
-            });
-
-            urlSubmitButton.addEventListener('click', () => {
-                const url = urlInput.value;
-                if (url) {
-                    fetch(url)
-                        .then(response => response.text())
-                        .then(data => {
-                            editor.setValue(data);
-                            urlModal.classList.add('hidden');
-                        })
-                        .catch(err => {
-                            console.error(`Failed to fetch script: ${err.message}`);
-                            urlModal.classList.add('hidden');
-                        });
-                } else {
-                    console.error('URL is required.');
-                }
-            });
-
-            urlModalCloseButton.addEventListener('click', () => {
-                urlModal.classList.add('hidden');
-            });
-
-            window.addEventListener('click', (event) => {
-                if (event.target === urlModal) {
-                    urlModal.classList.add('hidden');
-                }
-            });
-
-            // Minify Button Functionality
-            document.getElementById('minify').addEventListener('click', async () => {
-                const inputJs = editor.getValue();
-
-                try {
-                    const response = await fetch('https://js-minifier.vercel.app/minify', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ code: inputJs })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('Failed to minify JavaScript');
-                    }
-
-                    const minifiedCode = await response.text();
-                    editor.setValue(minifiedCode);
-                    console.log('Code minified successfully');
-                } catch (error) {
-                    console.error('Error:', error);
-                    console.error('Failed to minify JavaScript.');
-                }
-            });
-
-            // Register service worker
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/service-worker.js')
-                        .then(registration => {
-                            console.log('Service Worker registered with scope:', registration.scope);
-                        })
-                        .catch(error => {
-                            console.error('Service Worker registration failed:', error);
-                        });
-                });
-            }
-        });
-    </script>
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>
