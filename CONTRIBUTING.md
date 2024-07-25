@@ -56,6 +56,3 @@ If you have any questions or need help, feel free to open an issue or contact us
 
 We appreciate your contributions and look forward to collaborating with you to make Dev.js even better!
 
----
-
-Let me know if there are any other details you'd like to add!
