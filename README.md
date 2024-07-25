@@ -40,7 +40,7 @@ We welcome contributions to improve Dev.js! If you have suggestions or want to c
 
 ## License
 
-Dev.js is licensed under the [MIT License](LICENSE).
+Dev.js is licensed under a custom license called the [GitLicence](Licence).
 
 
 ## Needed Repo Forks
