@@ -13,6 +13,7 @@ Dev.js is a web-based JavaScript IDE designed to provide a seamless and interact
 - **Function Suggestions**: Get smart function suggestions as you type.
 - **Integrated Console**: Run and test your code directly within the IDE.
 - **Direct Decompression**: Allows you to minify your code directly in the IDE.
+- **HTTP Tracker**: Logs http requests to the console in order to debug your http requests.
 
 ## Live Demo
 
