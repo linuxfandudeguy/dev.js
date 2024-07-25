@@ -1,6 +1,4 @@
-Got it! Here’s the updated `CONTRIBUTING.md` file with the correct repository URLs:
 
----
 
 # Contributing to Dev.js
 
