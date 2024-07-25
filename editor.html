@@ -73,7 +73,8 @@
                 const color = {
                     log: 'text-gray-200',
                     error: 'text-red-500',
-                    warn: 'text-yellow-500'
+                    warn: 'text-yellow-500',
+                    request: 'text-blue-500'
                 }[type] || 'text-gray-200';
 
                 consoleDiv.innerHTML += `<div class="${color}">${message}</div>`;
@@ -101,10 +102,33 @@
                 originalConsole.warn.apply(console, arguments);
             };
 
+            // Override fetch to log HTTP requests
+            const originalFetch = window.fetch;
+            window.fetch = function (...args) {
+                const [resource, options] = args;
+                const requestDetails = {
+                    method: options?.method || 'GET',
+                    url: resource,
+                    headers: options?.headers,
+                    body: options?.body
+                };
+                logToConsole(`HTTP Request: ${requestDetails.method} ${requestDetails.url}`, 'request');
+
+                return originalFetch(...args).then(response => {
+                    const clonedResponse = response.clone();
+                    clonedResponse.text().then(body => {
+                        logToConsole(`HTTP Response: ${response.status} ${response.statusText} ${body}`, 'request');
+                    });
+                    return response;
+                }).catch(error => {
+                    logToConsole(`HTTP Error: ${error.message}`, 'error');
+                    throw error;
+                });
+            };
+
             document.getElementById('run').addEventListener('click', () => {
                 try {
                     const code = editor.getValue();
-
                     const transpiledCode = Babel.transform(code, { presets: ['env'] }).code;
 
                     const sandbox = {
@@ -194,7 +218,7 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({ code: inputJs }) // Correctly set the code property with the input JavaScript
+                        body: JSON.stringify({ code: inputJs })
                     });
 
                     if (!response.ok) {
@@ -202,13 +226,8 @@
                     }
 
                     const minifiedCode = await response.text();
-
-                    // Update the editor with the minified code
                     editor.setValue(minifiedCode);
                     console.log('Code minified successfully');
-
-                    // Optionally update the console
-                    console.log('JavaScript minified successfully!');
                 } catch (error) {
                     console.error('Error:', error);
                     console.error('Failed to minify JavaScript.');
