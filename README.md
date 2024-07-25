@@ -15,6 +15,10 @@ Dev.js is a web-based JavaScript IDE designed to provide a seamless and interact
 - **Direct Decompression**: Allows you to minify your code directly in the IDE.
 - **HTTP Tracker**: Logs http requests to the console in order to debug your http requests.
 
+We also now have a TS editor! :D
+
+[Visit it here!](https://devjs-ruby.vercel.app/tseditor.html)
+
 ## Live Demo
 
 Check out the live demo of Dev.js at [Dev.js Demo](https://devjs-ruby.vercel.app).
