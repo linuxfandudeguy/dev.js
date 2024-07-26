@@ -18,7 +18,7 @@ Dev.js is a web-based JavaScript IDE designed to provide a seamless and interact
 We also now have a TS editor! :D
 [Visit it here!](https://devjs-ruby.vercel.app/tseditor.html)
 
-We also now have desktop support!:D
+We also now have desktop support! :D
 
 
 ## Live Demo
