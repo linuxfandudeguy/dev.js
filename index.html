@@ -101,23 +101,43 @@
         </div>
     </section>
 
-    <section id="electron-app" class="container my-5">
-        <h2 class="text-center mb-5">Introducing Our New Electron Application</h2>
-        <p class="text-center">We are excited to announce that Dev.js is now available as a desktop application! This new Electron app allows you to use Dev.js on your desktop, providing a seamless development experience.</p>
-        <p class="text-center">Currently, our Electron application is packaged specifically for Linux distributions. To install the application on Linux, you must use one of the following supported distributions or other RHEL-based operating systems: CentOS, Fedora, openSUSE, PCLinuxOS, AlmaLinux, Oracle Linux, Mageia, Tizen, CBL-Mariner, or other RHEL-based systems. Debian is also supported, as it uses .deb files, which are compatible with our packaging.</p>
-        <p class="text-center">To use the application on Windows, you'll need to use Windows Subsystem for Linux (WSL) with one of the listed distributions.</p>
-        <p class="text-center">You can download the Electron application from the following link:</p>
-        <div class="text-center">
-            <a href="https://www.mediafire.com/file/ph6m291v0oys0mt/recovered.tar/file" class="btn btn-custom">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Tux.png" alt="Linux Logo" width="20" height="20">
-                Install for Linux
-            </a>
-        </div>
-        <p class="text-center mt-3">
-            Note: Despite the challenging and often frustrating experience of developing with Electron, I'm glad to have completed this application. Read more about my journey <a href="story.html">here</a>.
-            <br>
-            - lelbois, project owner/maintainer
-        </p>
+    <section id="setup-instructions" class="container my-5">
+        <h2 class="text-center mb-5">Setup Instructions</h2>
+        <p class="text-center">Our application is written in Python. Please follow the instructions below to set it up:</p>
+        <ol class="text-center">
+            <li>Download the application from the button below:</li>
+            <div class="text-center">
+                <a href="https://github.com/linuxfandudeguy/cdn-devjs/raw/main/devjs.zip" class="btn btn-custom">Download</a>
+            </div>
+            <li>Extract the downloaded ZIP file.</li>
+            <li>Open a terminal and navigate to the extracted directory.</li>
+        </ol>
+
+        <h3 class="text-center">Linux</h3>
+        <ol class="text-center">
+            <li>Ensure you have Python installed on your system. If not, download and install it from <a href="https://www.python.org/downloads/">here</a>.</li>
+            <li>Install the required dependencies by running <code>pip install webview</code>.</li>
+            <li>Ensure you have <code>tkinter</code> installed. If not, install it using your package manager (e.g., <code>sudo apt-get install python3-tk</code>).</li>
+            <li>Start the application by running <code>python main.py</code>.</li>
+        </ol>
+
+        <h3 class="text-center">Windows</h3>
+        <ol class="text-center">
+            <li>Ensure you have Python installed on your system. If not, download and install it from <a href="https://www.python.org/downloads/">here</a>.</li>
+            <li>Open Command Prompt and navigate to the extracted directory.</li>
+            <li>Install the required dependencies by running <code>pip install webview</code>.</li>
+            <li>If <code>tkinter</code> is not installed, run <code>python -m pip install tk</code>.</li>
+            <li>Start the application by running <code>python main.py</code>.</li>
+        </ol>
+
+        <h3 class="text-center">MacOS</h3>
+        <ol class="text-center">
+            <li>Ensure you have Python installed on your system. If not, download and install it from <a href="https://www.python.org/downloads/">here</a>.</li>
+            <li>Open Terminal and navigate to the extracted directory.</li>
+            <li>Install the required dependencies by running <code>pip install webview</code>.</li>
+            <li>If <code>tkinter</code> is not installed, run <code>brew install python-tk</code> (ensure you have Homebrew installed).</li>
+            <li>Start the application by running <code>python main.py</code>.</li>
+        </ol>
     </section>
 
     <!-- Footer -->
