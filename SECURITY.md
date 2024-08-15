@@ -9,4 +9,4 @@
 
 ## Reporting a Vulnerability
 
-if there's a vulnerability anywhere make a file called `tofix.txt` with the problem and the description of the problem
+If there's a vulnerability anywhere fork the repo and make a file called `tofix.txt` with the problem and the description of the problem
