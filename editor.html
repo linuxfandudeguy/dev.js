@@ -214,17 +214,39 @@
                 const inputJs = editor.getValue();
 
                 try {
-                    const minifiedJs = await Terser.minify(inputJs);
-                    if (minifiedJs.error) {
-                        console.error(`Minification Error: ${minifiedJs.error}`);
-                    } else {
-                        editor.setValue(minifiedJs.code);
-                        console.log('Code successfully minified');
+                    const response = await fetch('https://js-minifier.vercel.app/minify', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ code: inputJs })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to minify JavaScript');
                     }
+
+                    const minifiedCode = await response.text();
+                    editor.setValue(minifiedCode);
+                    console.log('Code minified successfully');
                 } catch (error) {
-                    console.error(`Minification failed: ${error.message}`);
+                    console.error('Error:', error);
+                    console.error('Failed to minify JavaScript.');
                 }
             });
+
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(registration => {
+                        
+                        })
+                        .catch(error => {
+                            console.error('Service Worker registration failed:', error);
+                        });
+                });
+            }
         });
     </script>
 </body>
